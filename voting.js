@@ -121,6 +121,10 @@ function vote_receiver(vote) {
     flim_vote_count.innerHTML = ++vote_totals[vote.film];
 
     // Flash and Update Display
+    animate( flim_vote_count, [
+        { 'd' : 0.8, 's' : 1.25, 'background' : '#e67e22' },
+        { 'd' : 0.9, 's' : 1.00, 'background' : '#2c3e50' }
+    ] );
 }
 
 // When Connection is Ready and Actively Streaming
