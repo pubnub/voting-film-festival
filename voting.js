@@ -28,9 +28,9 @@ film_display.innerHTML = film_display_buffer.join('');
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* VOTING CLICKS
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-delegate( film_display, 'clicks' );
+delegate( film_display, 'film-clicks' );
 
-PUBNUB.events.bind( 'clicks.vote', function(data) {
+PUBNUB.events.bind( 'film-clicks.vote', function(data) {
     var button  = data.target.getElementsByTagName('a')[0]
     ,   filmbox = data.target.parentNode
     ,   disable = 'btn btn-large btn-block btn-disable';
@@ -42,11 +42,12 @@ PUBNUB.events.bind( 'clicks.vote', function(data) {
     // Disable Button Interface
     PUBNUB.attr( button, 'class', disable );
     button.className = disable;
+    button.innerHTML = "DONE";
 
     // Disable Film Box
     PUBNUB.css( filmbox, {
-        opacity    : 0.2,
-        background : "#87f496",
+        opacity    : 0.6,
+        background : "#57a456",
         color      : "#fff"
     } );
 
