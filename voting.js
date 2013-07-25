@@ -5,6 +5,8 @@
 /* Film Variables
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 var vote_settings       = { publish_key : 'demo', subscribe_key : 'demo' }
+,   vote_totals         = {}
+,   vote_dedupe         = {}
 ,   vote_channel        = PUBNUB.$('film-vote-channel').innerHTML
 ,   pubnub              = PUBNUB.init(vote_settings)
 ,   my_uuid             = get_my_uuid()
@@ -33,7 +35,7 @@ delegate( film_display, 'film-clicks' );
 PUBNUB.events.bind( 'film-clicks.vote', function(data) {
     var button  = data.target.getElementsByTagName('a')[0]
     ,   filmbox = data.target.parentNode
-    ,   disable = 'btn btn-large btn-block btn-disable';
+    ,   disable = 'btn btn-large btn-block disabled';
 
     // Prevent Douplicate Votes
     if (pubnub.attr( button, 'data-voted' )) return;
@@ -47,7 +49,7 @@ PUBNUB.events.bind( 'film-clicks.vote', function(data) {
     // Disable Film Box
     PUBNUB.css( filmbox, {
         opacity    : 0.6,
-        background : "#57a456",
+        background : "#27ae60",
         color      : "#fff"
     } );
 
@@ -65,6 +67,11 @@ PUBNUB.events.bind( 'film-clicks.vote', function(data) {
 
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* LOAD ALL VOTING TOTALS
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* PARSE FILM FILE
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 function parse_film_file( data, format ) {
@@ -77,6 +84,86 @@ function parse_film_file( data, format ) {
         return film;
     });
 }
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* SHOW VOTING TOTALS IF SECRET URL KEY IS ENABLED
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+// TODO
+// TODO
+// TODO
+
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* VOTE COUNTING WITH MINOR DEDUPLICATION
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+pubnub.subscribe({
+    channel : vote_channel,
+    connect : tcp_stream_ready,
+    message : vote_receiver
+});
+
+// Vote Receiver
+function vote_receiver(vote) {
+    if (!('film' in vote)) return;
+    if (!('uuid' in vote)) return;
+
+    var film_dedupe_key = vote.film + '-' + vote.uuid
+    ,   flim_vote_count = PUBNUB.$('vote-' + vote.film);
+
+    // Dedupe Voting
+    if (film_dedupe_key in vote_dedupe) return;
+    vote_dedupe[film_dedupe_key] = 1;
+
+    console.log(vote, film_dedupe_key, flim_vote_count);
+
+    // Increment Counter
+    if (!(vote.film in vote_totals)) vote_totals[vote.film] = 0;
+    flim_vote_count.innerHTML = ++vote_totals[vote.film];
+
+    // Flash and Update Display
+}
+
+// When Connection is Ready and Actively Streaming
+function tcp_stream_ready() {
+
+    // Load all History
+    get_all_history({
+        channel  : vote_channel,
+        callback : function(messages) {
+            PUBNUB.each( messages, vote_receiver );
+        }
+    });
+
+}
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* LOAD ALL HISTORY EVER.  ;-|
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+function get_all_history(args) {
+    var channel  = args['channel']
+    ,   callback = args['callback']
+    ,   start    = 0
+    ,   count    = 100
+    ,   history  = []
+    ,   params   = {
+            channel  : channel,
+            count    : count,
+            callback : function(messages) {
+                var msgs = messages[0];
+                start = messages[1];
+                params.start = start;
+                PUBNUB.each( msgs.reverse(), function(m) {history.push(m)} );
+                callback(history);
+                if (msgs.length < count) return;
+                count = 100;
+                add_messages();
+            }
+        };
+
+    add_messages();
+    function add_messages() { pubnub.history(params) }
+}
+
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* GET MY UUID
