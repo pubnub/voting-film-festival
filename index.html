@@ -12,7 +12,6 @@
 </head>
 <body>
 
-
 <!-- NAVIGATION HEADER -->
 <div class=container>
 
@@ -27,8 +26,8 @@
     <div class="span5 voting-box">
         <div class=voting-image style=background-image:url(media/{image})></div>
         <div class=voting-title>{title}</div>
-        <!--<div class=voting-director>{director}</div>-->
-        <div class=voting-button>
+        <div class=voting-director>{director}</div>
+        <div class=voting-button data-data="{image}" data-action="vote">
             <div class="span2 span-btn"><a href="#fakelink"
             class="btn btn-large btn-block btn-info">Vote</a></div>
         </div>
@@ -36,8 +35,14 @@
 
 </script>
 
-<!-- FILM LIST TAB DELIMITED -->
+
+<!-- FILM VOTE CHANNEL -->
+<script id=film-vote-channel type=film-list>mvaaff</script>
+
+<!-- FILM FORMAT TAB DELIMITED -->
 <script id=film-data-columns type=film-list>title	director	description	type	image</script>
+
+<!-- FILM LIST TAB DELIMITED -->
 <script id=film-data type=film-list>In The Balance	Kemuel Charles	Two US Marine Soldiers returning home from the Iraq war, suffering from Post Traumatic Stress Disorder, must learn how to cope with their “new” everyday reality. 	short	shawn.jpg
 The Bored Room	Angela Akins	A comedy series that invites you into the odd team meetings of Loni, her co-workers and their quirky personalities. With Loni in the room, something unexpected is bound to happen and it doesn't take long before her co-workers chime into the madness of it all.	webisode	the-bored-room.jpg
 Breaking Night	Yolonda Ross	Girl flees a heavy situation at home with her boyfriend. Overnight this "young lost" girl experiences a transformation which leaves her emerging as a young woman with purpose.	short	breaking-night.jpg

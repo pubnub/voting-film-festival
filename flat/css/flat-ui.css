@@ -203,7 +203,7 @@ you can use the generic selector below, but it's slower:
 
 body {
   color: #34495e;
-  font-family: "Lato", sans-serif;
+  font-family: "Helvetica Neue", sans-serif;
   font-size: 14px;
   line-height: 1.231;
 }
