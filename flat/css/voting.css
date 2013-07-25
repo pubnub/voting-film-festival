@@ -1,0 +1,33 @@
+/* ======================================================================= */
+/* VOTING BOX
+/* ======================================================================= */
+.voting-box {
+    position: relative;
+    height: 100px;
+    border-bottom: 1px solid rgb(200,200,200);
+    margin-bottom: 5px;
+}
+
+.voting-image {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 120px;
+    height: 85px;
+    background-color: black;
+    background-size: 120px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.voting-title {
+    position: absolute;
+    top: 10px;
+    left: 140px;
+}
+
+.voting-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
