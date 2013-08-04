@@ -22,6 +22,11 @@ var vote_settings       = { publish_key : 'demo', subscribe_key : 'demo' }
 /* RENDER FILMS
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 PUBNUB.each( films, function(film) {
+    var type = film.type || '';
+    var cats = PUBNUB.$('nav-categories').innerHTML;
+    var bad = !type || cats.indexOf(type) == -1;
+
+    console.log("%c"+type+ ' ----- '+ film.image,(!bad?"":"color:red;font-size:20px;") );
     film_display_buffer.push(PUBNUB.supplant( film_template, film ));
 } );
 film_display.innerHTML = film_display_buffer.join('');
@@ -51,20 +56,7 @@ delegate( navigation, 'nav-clicks' );
 PUBNUB.events.bind( 'nav-clicks.nav', function(data) {
     var button = data.target;
 
-console.log(data);
-/*
-console.log(button.parentNode.getElementsByTagName('li'));
-
-    PUBNUB.each(
-    Array().slice.call(button.parentNode.getElementsByTagName('li')),
-    function(li) {
-        PUBNUB.attr( button, 'class', ' ' );
-        button.className = ' ';
-    } );
-    PUBNUB.attr( button, 'class', 'selected' );
-    button.className = 'selected';
-    */
-    
+    console.log(data);
 } );
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
