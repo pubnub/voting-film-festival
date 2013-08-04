@@ -144,9 +144,15 @@ function parse_film_file( data, format ) {
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* SHOW VOTING TOTALS IF SECRET URL KEY IS ENABLED
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-// TODO
-// TODO
-// TODO
+if (
+    location.href.split(/\//)[2] === 'mvaaff-total.pubnub.com' ||
+    location.href.split(/:/)[0] === 'file'
+) {
+    PUBNUB.each( film_display.getElementsByTagName, function(div) {
+        if (div.className !== "voting-totals") return;
+        PUBNUB.css( div, { display : 'block' } );
+    } );
+}
 
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
