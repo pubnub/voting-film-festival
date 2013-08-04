@@ -22,7 +22,12 @@ var vote_settings       = { publish_key : 'demo', subscribe_key : 'demo' }
 /* RENDER FILMS
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 PUBNUB.each( films, function(film) {
-    film_display_buffer.push(PUBNUB.supplant( film_template, film ));
+    if (typeof film === "string") {
+        console.log(film);
+        film_display_buffer.push("<h2 class=span10>"+film+"</h2>");
+    }
+    else
+        film_display_buffer.push(PUBNUB.supplant( film_template, film ));
 } );
 film_display.innerHTML = film_display_buffer.join('');
 
@@ -109,7 +114,7 @@ PUBNUB.events.bind( 'nav-clicks.nav', function(data) {
 
         // Hide
         if (fcategory !== category)
-            PUBNUB.css( film, { display : 'none' } );
+            PUBNUB.css( film, { display : 'none'  } );
         else
             PUBNUB.css( film, { display : 'block' } );
     } );
@@ -128,6 +133,9 @@ function parse_film_file( data, format ) {
     return data.split(/\n/).map(function(row){
         // Ignore Comment Lines
         if (check_row(row)) return '';
+
+        // Title Tag
+        if (row.charAt(0) === '-') return row.split(/--? */)[1];
 
         var film = {};
         PUBNUB.each( row.split(/\t/), function( column, position ) {
