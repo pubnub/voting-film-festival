@@ -7,6 +7,9 @@
 .capitalize {
     text-transform: capitalize;
 }
+.hidden {
+    display: none;
+}
 
 
 /* ======================================================================= */
@@ -82,7 +85,6 @@
 }
 
 .voting-totals {
-    display: none;
     position: absolute;
     top: -8px;
     left: -8px;

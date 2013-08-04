@@ -146,10 +146,15 @@ function parse_film_file( data, format ) {
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 if (
     location.href.split(/\//)[2] === 'mvaaff-total.pubnub.com' ||
-    location.href.split(/:/)[0] === 'file'
+    location.href.split(/:/)[0]  === 'file'
 ) {
-    PUBNUB.each( film_display.getElementsByTagName, function(div) {
-        if (div.className !== "voting-totals") return;
+    var films  = film_display.getElementsByTagName('div')
+    ,   fclass = "voting-totals";
+
+    PUBNUB.each( films, function(div) {
+        if (div.className.indexOf(fclass)<0) return;
+        PUBNUB.attr( div, 'class', fclass );
+        div.className = fclass;
         PUBNUB.css( div, { display : 'block' } );
     } );
 }
