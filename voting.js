@@ -23,7 +23,6 @@ var vote_settings       = { publish_key : 'demo', subscribe_key : 'demo' }
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 PUBNUB.each( films, function(film) {
     if (typeof film === "string") {
-        console.log(film);
         film_display_buffer.push("<h2 class=span10>"+film+"</h2>");
     }
     else
