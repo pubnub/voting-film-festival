@@ -13,13 +13,47 @@
 </head>
 <body>
 
-<!-- NAVIGATION HEADER -->
+<!-- MAIN -->
 <div class=container>
+    <!-- LOGOS AND SPONSORS -->
+    <div>
+        <div class=span5 id=pubnub-logo></div>
+        <div class=span5 id=film-logo></div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="span10" id="navigation">
+    <div class="navbar navbar-inverse">
+    <div class="navbar-inner">
+    <div class="container">
+        <ul class="nav">
+            <li data-action="nav" data-data="short" class="selected">
+                <a href="#fakelink">Short</a>
+            </li>
+            <li data-action="nav" data-data="documentary">
+                <a href="#fakelink">Documentary</a>
+            </li>
+            <li data-action="nav" data-data="feature">
+                <a href="#fakelink">Feature</a>
+            </li>
+        </ul>
+    </div></div></div></div>
+
+    <!-- HEADING TITLE -->
+    <div class=span10>
+        <h1>Martha's Vineyard African-American Film Festival</h1>
+        <p>
+            Use your phone to vote
+            on your favorite films
+            for each category.
+        </p>
+    </div>
 
     <!-- FILMS WILL APPEAR HERE -->
     <div id=film-display></div>
 
 </div>
+
 
 <!-- TEMPLATE FOR VOTING PANEL -->
 <script id=film-template type=template>

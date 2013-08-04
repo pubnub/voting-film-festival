@@ -1,5 +1,24 @@
 /* ======================================================================= */
-/* PALETTE COLORs
+/* UTILITIES
+/* ======================================================================= */
+.clear {
+    clear: both;
+}
+
+
+/* ======================================================================= */
+/* NAVIGATION
+/* ======================================================================= */
+.selected {
+    color: #44444e;
+    background: #fcdb56;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: px;
+}
+
+/* ======================================================================= */
+/* PALETTE COLORS
 /* ======================================================================= */
 .palette-yellow {
     background-color: #fcdb56;
@@ -15,6 +34,28 @@
 }
 
 /* ======================================================================= */
+/* LOGOS AND SPONSORS
+/* ======================================================================= */
+#pubnub-logo {
+    background-image: url(../../media/pubnub-logo.png);
+    height: 120px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-size: 260px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+#film-logo {
+    background-image: url(../../media/film-logo.jpg);
+    height: 120px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-size: 320px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* ======================================================================= */
 /* VOTING UI
 /* ======================================================================= */
 .voting-box {
@@ -23,7 +64,8 @@
     border-bottom: 1px solid rgb(200,200,200);
     margin-top: 10px;
     margin-bottom: 5px;
-    background-color: #c3dedb;
+    background-color: #fff;
+    background-color: #fcdb56;
     border-radius: 3px;
 }
 

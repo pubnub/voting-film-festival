@@ -10,6 +10,7 @@ var vote_settings       = { publish_key : 'demo', subscribe_key : 'demo' }
 ,   vote_channel        = PUBNUB.$('film-vote-channel').innerHTML
 ,   pubnub              = PUBNUB.init(vote_settings)
 ,   my_uuid             = get_my_uuid()
+,   navigation          = PUBNUB.$('navigation')
 ,   film_display        = PUBNUB.$('film-display')
 ,   film_template       = PUBNUB.$('film-template').innerHTML
 ,   film_data           = PUBNUB.$('film-data').innerHTML
@@ -26,6 +27,30 @@ PUBNUB.each( films, function(film) {
 } );
 film_display.innerHTML = film_display_buffer.join('');
 
+
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* NAVIGATION CLICKS
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+delegate( navigation, 'nav-clicks' );
+
+PUBNUB.events.bind( 'nav-clicks.nav', function(data) {
+    var button = data.target;
+
+console.log(data);
+/*
+console.log(button.parentNode.getElementsByTagName('li'));
+
+    PUBNUB.each(
+    Array().slice.call(button.parentNode.getElementsByTagName('li')),
+    function(li) {
+        PUBNUB.attr( button, 'class', ' ' );
+        button.className = ' ';
+    } );
+    PUBNUB.attr( button, 'class', 'selected' );
+    button.className = 'selected';
+    */
+    
+} );
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* VOTING CLICKS
@@ -63,10 +88,7 @@ function disable_voting_box( button, filmbox ) {
     button.innerHTML = "DONE";
 
     // Disable Film Box
-    PUBNUB.css( filmbox, {
-        opacity : 0.6,
-        color   : "#fff"
-    } );
+    PUBNUB.css( filmbox, { opacity : 0.6 } );
 }
 
 
@@ -129,8 +151,8 @@ function vote_receiver(vote) {
 
     // Flash and Update Display
     animate( flim_vote_count, [
-        { 'd' : 0.8, 's' : 1.25, 'background' : '#fcdb56' },
-        { 'd' : 0.9, 's' : 1.00, 'background' : '#e97d50' }
+        { 'd' : 0.3, 's' : 2.00, 'r' : 20.0, 'background' : '#fcdb56' },
+        { 'd' : 0.8, 's' : 1.00, 'r' : 20.0, 'background' : '#e97d50' }
     ] );
 }
 
@@ -150,12 +172,6 @@ function tcp_stream_ready() {
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* LOAD ALL HISTORY EVER.  ;-|
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-// TODO
-// TODO
-// TODO onload - disable all previously voted items
-// TODO onload - disable all previously voted items
-// TODO
-// TODO
 function get_all_history(args) {
     var channel  = args['channel']
     ,   callback = args['callback']

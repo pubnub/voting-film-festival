@@ -209,7 +209,7 @@ body {
   font-family: "Helvetica Neue", sans-serif;
   font-size: 14px;
   line-height: 1.231;
-  background-image: url(../../bg.jpg);
+  background-image: url(../../media/bg.png);
 }
 input,
 button,
@@ -580,11 +580,11 @@ h6 {
   left: 100%;
 }
 .navbar .nav > li > a {
-  color: #fff;
+  color: #202b5b;
   font-weight: 700;
   font-size: 20px;
   padding: 29px 20px 27px;
-  text-shadow: none;
+  text-shadow: 0 2px 0 rgba(255,255,255, 0.45);
   -webkit-transition: background-color .25s, color .25s, border-bottom-color .25s;
   -moz-transition: background-color .25s, color .25s, border-bottom-color .25s;
   -o-transition: background-color .25s, color .25s, border-bottom-color .25s;
@@ -593,7 +593,7 @@ h6 {
 }
 .navbar .nav > li > a:hover,
 .navbar .nav > li > a:focus {
-  color: #2ECC71;
+  color: #fcdb56;
 }
 .navbar .nav > li > a[class*="fui-"] {
   font-size: 24px;
@@ -700,6 +700,7 @@ h6 {
 .navbar-inner {
   background: transparent;
   border: none;
+  border-bottom: 2px solid #2c3e50;
   padding-left: 0;
   padding-right: 0;
   -webkit-border-radius: 6px;
@@ -716,17 +717,17 @@ h6 {
 
 }
 .navbar-inverse .navbar-inner {
-  background: #34495e;
+  background: #fcdb56;
   filter: unquote("progid:DXImageTransform.Microsoft.gradient(enabled = false)");
 }
 .navbar-inverse .brand {
   border-bottom: 2px solid #2c3e50;
   border-right: 2px solid #2c3e50;
-  color: #ffffff;
+  color: #fff;
   padding: 10px 28px 11px 32px;
 }
 .navbar-inverse .btn-navbar {
-  color: #ffffff;
+  color: #fff;
   margin: 7px 10px;
 }
 .navbar-inverse .nav > li:first-child.active > a {
@@ -741,7 +742,7 @@ h6 {
   background-color: #1abc9c;
   border-bottom-color: #16a085;
   border-left: none;
-  color: #ffffff;
+  color: #fff;
   padding-left: 22px;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
@@ -755,9 +756,7 @@ h6 {
   font-size: 16.002px;
   /* 16px */
 
-  border-bottom: 2px solid #2c3e50;
   border-left: 2px solid #2c3e50;
-  color: #ffffff;
   padding: 16px 20px 15px;
 }
 .navbar-inverse .nav.pull-right > li > a {
@@ -768,7 +767,7 @@ h6 {
   font-family: "Lato", sans-serif;
   background-color: #1abc9c;
   border-radius: 50%;
-  color: #ffffff;
+  color: #fff;
   font-size: 0;
   font-weight: 700;
   height: 6px;
