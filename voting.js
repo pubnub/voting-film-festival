@@ -10,7 +10,6 @@ var vote_settings       = { publish_key : 'demo', subscribe_key : 'demo' }
 ,   vote_channel        = PUBNUB.$('film-vote-channel').innerHTML
 ,   pubnub              = PUBNUB.init(vote_settings)
 ,   my_uuid             = get_my_uuid()
-,   navigation          = PUBNUB.$('navigation')
 ,   film_display        = PUBNUB.$('film-display')
 ,   film_template       = PUBNUB.$('film-template').innerHTML
 ,   film_data           = PUBNUB.$('film-data').innerHTML
@@ -31,8 +30,24 @@ film_display.innerHTML = film_display_buffer.join('');
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* NAVIGATION CLICKS
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+var nav_template = PUBNUB.$('nav-template').innerHTML
+,   categories   = PUBNUB.$('nav-categories').innerHTML.replace( /\s/g, '' )
+,   cat_disp_buf = []
+,   navlist      = PUBNUB.$('navlist')
+,   navigation   = PUBNUB.$('navigation');
+
+// Build Navigation Categories
+PUBNUB.each( categories.split(','), function(category) {
+    cat_disp_buf.push(PUBNUB.supplant( nav_template, {
+        nav : category
+    } ));
+} );
+navlist.innerHTML = cat_disp_buf.join('');
+
+// Start Delegation
 delegate( navigation, 'nav-clicks' );
 
+// Receive Delegated Events
 PUBNUB.events.bind( 'nav-clicks.nav', function(data) {
     var button = data.target;
 

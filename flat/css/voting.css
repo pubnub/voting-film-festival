@@ -4,6 +4,9 @@
 .clear {
     clear: both;
 }
+.capitalize {
+    text-transform: capitalize;
+}
 
 
 /* ======================================================================= */
@@ -41,7 +44,7 @@
     height: 120px;
     margin-top: 20px;
     margin-bottom: 20px;
-    background-size: 260px;
+    background-size: 200px;
     background-position: center center;
     background-repeat: no-repeat;
 }

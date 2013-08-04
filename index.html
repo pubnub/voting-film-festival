@@ -26,17 +26,7 @@
     <div class="navbar navbar-inverse">
     <div class="navbar-inner">
     <div class="container">
-        <ul class="nav">
-            <li data-action="nav" data-data="short" class="selected">
-                <a href="#fakelink">Short</a>
-            </li>
-            <li data-action="nav" data-data="documentary">
-                <a href="#fakelink">Documentary</a>
-            </li>
-            <li data-action="nav" data-data="feature">
-                <a href="#fakelink">Feature</a>
-            </li>
-        </ul>
+        <ul class="nav" id="navlist"></ul>
     </div></div></div></div>
 
     <!-- HEADING TITLE -->
@@ -45,7 +35,7 @@
         <p>
             Use your phone to vote
             on your favorite films
-            for each category.
+            for each film category.
         </p>
     </div>
 
@@ -54,6 +44,12 @@
 
 </div>
 
+<!-- TEMPLATE FOR NAVIGATION -->
+<script id=nav-template type=template>
+    <li data-action="nav" data-data="{nav}">
+        <a href="#fakelink" class=capitalize>{nav}</a>
+    </li>
+</script>
 
 <!-- TEMPLATE FOR VOTING PANEL -->
 <script id=film-template type=template>
@@ -73,18 +69,25 @@
     </div>
 </script>
 
+<!-- ===================================== -->
 <!-- FILM VOTING CONFIGUATION AND SETTINGS -->
+<!-- ===================================== -->
+
+<!-- VOTING CATEGORIES -->
+<script id=nav-categories type=template>
+    short,documentary,feature
+</script>
 
 <!-- FILM VOTE CHANNEL -->
-<script id=film-vote-channel type=film-list>mvaaff</script>
+<script id=film-vote-channel type=template>mvaaff</script>
 
 <!-- FILM FORMAT TAB DELIMITED -->
-<script id=film-data-columns type=film-list>
+<script id=film-data-columns type=template>
     title,director,description,type,image
 </script>
 
 <!-- FILM LIST TAB DELIMITED -->
-<script id=film-data type=film-list>In The Balance	Kemuel Charles	Two US Marine Soldiers returning home from the Iraq war, suffering from Post Traumatic Stress Disorder, must learn how to cope with their “new” everyday reality. 	short	shawn.jpg
+<script id=film-data type=template>In The Balance	Kemuel Charles	Two US Marine Soldiers returning home from the Iraq war, suffering from Post Traumatic Stress Disorder, must learn how to cope with their “new” everyday reality. 	short	shawn.jpg
 The Bored Room	Angela Akins	A comedy series that invites you into the odd team meetings of Loni, her co-workers and their quirky personalities. With Loni in the room, something unexpected is bound to happen and it doesn't take long before her co-workers chime into the madness of it all.	webisode	the-bored-room.jpg
 Breaking Night	Yolonda Ross	Girl flees a heavy situation at home with her boyfriend. Overnight this "young lost" girl experiences a transformation which leaves her emerging as a young woman with purpose.	short	breaking-night.jpg
 Living & Loving In The Moment	Jonathan A. Lewis	This story follows a loving father who finds out devastating news, right before his sons 18th birthday. In the midst of his inner conflict, he learns to, live and love in the moment.'	short	living-loving-in-the-moment.jpg

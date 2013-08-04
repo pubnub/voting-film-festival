@@ -5,6 +5,7 @@ types of created artworks.
 
 ## Under Construction TODOs:
 
+##### Create Framework SDK
 
 ##### Color Palette
 
