@@ -22,42 +22,10 @@ var vote_settings       = { publish_key : 'demo', subscribe_key : 'demo' }
 /* RENDER FILMS
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 PUBNUB.each( films, function(film) {
-    var type = film.type || '';
-    var cats = PUBNUB.$('nav-categories').innerHTML;
-    var bad = !type || cats.indexOf(type) == -1;
-
-    console.log("%c"+type+ ' ----- '+ film.image,(!bad?"":"color:red;font-size:20px;") );
     film_display_buffer.push(PUBNUB.supplant( film_template, film ));
 } );
 film_display.innerHTML = film_display_buffer.join('');
 
-
-/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-/* NAVIGATION CLICKS
-/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-var nav_template = PUBNUB.$('nav-template').innerHTML
-,   categories   = PUBNUB.$('nav-categories').innerHTML.replace( /\s/g, '' )
-,   cat_disp_buf = []
-,   navlist      = PUBNUB.$('navlist')
-,   navigation   = PUBNUB.$('navigation');
-
-// Build Navigation Categories
-PUBNUB.each( categories.split(','), function(category) {
-    cat_disp_buf.push(PUBNUB.supplant( nav_template, {
-        nav : category
-    } ));
-} );
-navlist.innerHTML = cat_disp_buf.join('');
-
-// Start Delegation
-delegate( navigation, 'nav-clicks' );
-
-// Receive Delegated Events
-PUBNUB.events.bind( 'nav-clicks.nav', function(data) {
-    var button = data.target;
-
-    console.log(data);
-} );
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* VOTING CLICKS
@@ -103,18 +71,76 @@ function disable_voting_box( button, filmbox ) {
 /* ...
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+/* NAVIGATION CLICKS
+/* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+var nav_template = PUBNUB.$('nav-template').innerHTML
+,   categories   = PUBNUB.$('nav-categories')
+                   .innerHTML
+                   .replace( /\s/g, '' )
+                   .split(',')
+,   cat_disp_buf = []
+,   navlist      = PUBNUB.$('navlist')
+,   navigation   = PUBNUB.$('navigation');
+
+// Build Navigation Categories
+PUBNUB.each( categories, function(category) {
+    cat_disp_buf.push(PUBNUB.supplant( nav_template, {
+        nav : category
+    } ));
+} );
+navlist.innerHTML = cat_disp_buf.join('');
+
+// Start Delegation
+delegate( navigation, 'nav-clicks' );
+
+// Receive Delegated Events
+PUBNUB.events.bind( 'nav-clicks.nav', function(data) {
+    var category = data.data
+    ,   films    = film_display.getElementsByTagName('div');
+
+    console.log(data);
+
+    PUBNUB.each( films, function(film) {
+        var fcategory = PUBNUB.attr( film, 'data-category' );
+
+        // Skip non-target DIVs
+        if (!fcategory || categories.join(',').indexOf(
+            fcategory
+        ) === -1) return;
+
+        // Hide
+        if (fcategory !== category)
+            PUBNUB.css( film, { display : 'none' } );
+        else
+            PUBNUB.css( film, { display : 'block' } );
+    } );
+
+} );
+
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* PARSE FILM FILE
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+function check_row(row) {
+    return !row || (typeof(row) === "string" && row.charCodeAt(0) === 35);
+}
 function parse_film_file( data, format ) {
     var format = format.replace(/\s/g,'').split(/,/);
     return data.split(/\n/).map(function(row){
+        // Ignore Comment Lines
+        if (check_row(row)) return '';
+
         var film = {};
         PUBNUB.each( row.split(/\t/), function( column, position ) {
             film[format[position]] = column;
         } );
+
         return film;
+    }).filter(function(row){
+        // Prevent Rendering Comments
+        console.log(row);
+        return !check_row(row);
     });
 }
 

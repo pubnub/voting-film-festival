@@ -593,7 +593,7 @@ h6 {
 }
 .navbar .nav > li > a:hover,
 .navbar .nav > li > a:focus {
-  color: #fcdb56;
+  color: #e97d50;
 }
 .navbar .nav > li > a[class*="fui-"] {
   font-size: 24px;
