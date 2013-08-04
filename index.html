@@ -23,26 +23,31 @@
 
 <!-- TEMPLATE FOR VOTING PANEL -->
 <script id=film-template type=template>
-
-    <div class="span5 voting-box">
-        <div class=voting-image style=background-image:url(media/{image})></div>
+    <div class="span5 voting-box" id="filmbox-{image}">
+        <div
+            class=voting-image
+            style=background-image:url(images/{image})>
+        </div>
         <div class=voting-title>{title}</div>
         <div class=voting-director>{director}</div>
         <div class=voting-totals id="vote-{image}">&nbsp;&nbsp;</div>
         <div class=voting-button data-data="{image}" data-action="vote">
             <div class="span2 span-btn"><a href="#fakelink"
-            class="btn btn-large btn-block btn-success">Vote</a></div>
+            class="btn btn-large btn-block palette-navy"
+            id="button-{image}">Vote</a></div>
         </div>
     </div>
-
 </script>
 
+<!-- FILM VOTING CONFIGUATION AND SETTINGS -->
 
 <!-- FILM VOTE CHANNEL -->
 <script id=film-vote-channel type=film-list>mvaaff</script>
 
 <!-- FILM FORMAT TAB DELIMITED -->
-<script id=film-data-columns type=film-list>title	director	description	type	image</script>
+<script id=film-data-columns type=film-list>
+    title,director,description,type,image
+</script>
 
 <!-- FILM LIST TAB DELIMITED -->
 <script id=film-data type=film-list>In The Balance	Kemuel Charles	Two US Marine Soldiers returning home from the Iraq war, suffering from Post Traumatic Stress Disorder, must learn how to cope with their “new” everyday reality. 	short	shawn.jpg

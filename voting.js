@@ -34,27 +34,13 @@ delegate( film_display, 'film-clicks' );
 
 PUBNUB.events.bind( 'film-clicks.vote', function(data) {
     var button  = data.target.getElementsByTagName('a')[0]
-    ,   filmbox = data.target.parentNode
-    ,   disable = 'btn btn-large btn-block disabled';
+    ,   filmbox = data.target.parentNode;
 
     // Prevent Douplicate Votes
     if (pubnub.attr( button, 'data-voted' )) return;
-    pubnub.attr( button, 'data-voted', 'true' );
 
-    // Disable Button Interface
-    PUBNUB.attr( button, 'class', disable );
-    button.className = disable;
-    button.innerHTML = "DONE";
-
-    // Disable Film Box
-    PUBNUB.css( filmbox, {
-        opacity    : 0.6,
-        background : "#27ae60",
-        color      : "#fff"
-    } );
-
-    // Debug
-    console.log( data );
+    // Disable Voting Visually
+    disable_voting_box( button, filmbox );
 
     // Deliver Vote
     pubnub.publish({ channel : vote_channel, message : {
@@ -65,9 +51,27 @@ PUBNUB.events.bind( 'film-clicks.vote', function(data) {
     
 } );
 
+function disable_voting_box( button, filmbox ) {
+    var disable = 'btn btn-large btn-block disabled';
+
+    // Disable Button
+    pubnub.attr( button, 'data-voted', 'true' );
+
+    // Disable Button Interface
+    PUBNUB.attr( button, 'class', disable );
+    button.className = disable;
+    button.innerHTML = "DONE";
+
+    // Disable Film Box
+    PUBNUB.css( filmbox, {
+        opacity : 0.6,
+        color   : "#fff"
+    } );
+}
+
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-/* LOAD ALL VOTING TOTALS
+/* ...
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
 
@@ -75,7 +79,7 @@ PUBNUB.events.bind( 'film-clicks.vote', function(data) {
 /* PARSE FILM FILE
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 function parse_film_file( data, format ) {
-    var format = format.split(/\t/);
+    var format = format.replace(/\s/g,'').split(/,/);
     return data.split(/\n/).map(function(row){
         var film = {};
         PUBNUB.each( row.split(/\t/), function( column, position ) {
@@ -108,13 +112,16 @@ function vote_receiver(vote) {
     if (!('uuid' in vote)) return;
 
     var film_dedupe_key = vote.film + '-' + vote.uuid
-    ,   flim_vote_count = PUBNUB.$('vote-' + vote.film);
+    ,   flim_vote_count = PUBNUB.$('vote-'    + vote.film)
+    ,   button          = PUBNUB.$('button-'  + vote.film)
+    ,   filmbox         = PUBNUB.$('filmbox-' + vote.film);
+
+    // Disable Voting Visually
+    if (vote.uuid == my_uuid) disable_voting_box( button, filmbox );
 
     // Dedupe Voting
     if (film_dedupe_key in vote_dedupe) return;
     vote_dedupe[film_dedupe_key] = 1;
-
-    console.log(vote, film_dedupe_key, flim_vote_count);
 
     // Increment Counter
     if (!(vote.film in vote_totals)) vote_totals[vote.film] = 0;
@@ -122,8 +129,8 @@ function vote_receiver(vote) {
 
     // Flash and Update Display
     animate( flim_vote_count, [
-        { 'd' : 0.8, 's' : 1.25, 'background' : '#e67e22' },
-        { 'd' : 0.9, 's' : 1.00, 'background' : '#2c3e50' }
+        { 'd' : 0.8, 's' : 1.25, 'background' : '#fcdb56' },
+        { 'd' : 0.9, 's' : 1.00, 'background' : '#e97d50' }
     ] );
 }
 
@@ -143,6 +150,12 @@ function tcp_stream_ready() {
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* LOAD ALL HISTORY EVER.  ;-|
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+// TODO
+// TODO
+// TODO onload - disable all previously voted items
+// TODO onload - disable all previously voted items
+// TODO
+// TODO
 function get_all_history(args) {
     var channel  = args['channel']
     ,   callback = args['callback']
