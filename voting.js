@@ -99,8 +99,6 @@ PUBNUB.events.bind( 'nav-clicks.nav', function(data) {
     var category = data.data
     ,   films    = film_display.getElementsByTagName('div');
 
-    console.log(data);
-
     PUBNUB.each( films, function(film) {
         var fcategory = PUBNUB.attr( film, 'data-category' );
 
@@ -139,7 +137,6 @@ function parse_film_file( data, format ) {
         return film;
     }).filter(function(row){
         // Prevent Rendering Comments
-        console.log(row);
         return !check_row(row);
     });
 }
